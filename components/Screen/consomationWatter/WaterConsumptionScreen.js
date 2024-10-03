@@ -7,60 +7,77 @@ import {
   Button,
   Modal,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 const WaterConsumptionScreen = () => {
   const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear().toString());
   const [consumption, setConsumption] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    setModalVisible(true);
+    if (month && year && consumption) {
+      setModalVisible(true);
+    } else {
+      Alert.alert("Erreur", "Veuillez remplir tous les champs.");
+    }
   };
 
   const handlePasswordSubmit = () => {
-    // Verify password (for demonstration purposes, we'll assume '1234' is the correct password)
     if (password === "1234") {
-      Alert.alert("Success", "Consumption recorded successfully.");
-      // Here you would handle the submission logic, e.g., API call
+      Alert.alert("Succès", "Consommation enregistrée avec succès.");
       setModalVisible(false);
       setPassword("");
     } else {
-      Alert.alert("Error", "Incorrect password.");
+      Alert.alert("Erreur", "Mot de passe incorrect.");
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Record Water Consumption</Text>
-      <Picker
-        selectedValue={month}
-        onValueChange={(itemValue) => setMonth(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Select Month" value="" />
-        <Picker.Item label="January" value="January" />
-        <Picker.Item label="February" value="February" />
-        {/* Add other months here */}
-      </Picker>
+      <Text style={styles.title}>Enregistrer la consommation d'eau</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={month}
+          onValueChange={(itemValue) => setMonth(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="Sélectionner un mois" value="" />
+          <Picker.Item label="Janvier" value="January" />
+          <Picker.Item label="Février" value="February" />
+          <Picker.Item label="Mars" value="March" />
+          <Picker.Item label="Avril" value="April" />
+          <Picker.Item label="Mai" value="May" />
+          <Picker.Item label="Juin" value="June" />
+          <Picker.Item label="Juillet" value="July" />
+          <Picker.Item label="Août" value="August" />
+          <Picker.Item label="Septembre" value="September" />
+          <Picker.Item label="Octobre" value="October" />
+          <Picker.Item label="Novembre" value="November" />
+          <Picker.Item label="Décembre" value="December" />
+        </Picker>
+      </View>
       <TextInput
         style={styles.input}
-        placeholder="Year"
+        placeholder="Année"
         keyboardType="numeric"
+        maxLength={4}
         value={year}
         onChangeText={(text) => setYear(text)}
       />
       <TextInput
         style={styles.input}
-        placeholder="Water Consumption (m³)"
+        placeholder="Consommation d'eau (m³)"
         keyboardType="numeric"
         value={consumption}
         onChangeText={(text) => setConsumption(text)}
       />
-      <Button title="Submit" onPress={handleSubmit} color="#007BFF" />
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Soumettre</Text>
+      </TouchableOpacity>
 
       <Modal
         animationType="slide"
@@ -73,20 +90,21 @@ const WaterConsumptionScreen = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
-              Enter Password for Verification
+              Entrez le mot de passe pour vérification
             </Text>
             <TextInput
               style={styles.input}
-              placeholder="Password"
+              placeholder="Mot de passe"
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
             />
-            <Button
-              title="Submit"
+            <TouchableOpacity
+              style={styles.button}
               onPress={handlePasswordSubmit}
-              color="#007BFF"
-            />
+            >
+              <Text style={styles.buttonText}>Soumettre</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -104,18 +122,38 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+    textAlign: "center",
+  },
+  pickerContainer: {
+    borderColor: "#007BFF",
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 20,
+    overflow: "hidden",
+  },
+  picker: {
+    height: 50,
+    backgroundColor: "#fff",
   },
   input: {
     height: 40,
-    borderColor: "#ccc",
+    borderColor: "#007BFF",
     borderWidth: 1,
     marginBottom: 20,
     paddingHorizontal: 10,
     backgroundColor: "white",
+    borderRadius: 8,
   },
-  picker: {
-    height: 50,
-    marginBottom: 20,
+  button: {
+    backgroundColor: "#007BFF",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   modalContainer: {
     flex: 1,
@@ -138,6 +176,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    fontSize: 16,
   },
 });
 

@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { bgcolor, iconcolor } from "../../utils/Variable/Color";
+import { bgcolor, iconcolor, primary, statusBg } from "../../utils/Variable/Color";
 
 
 const SignUp = ({ navigation }) => {
@@ -20,7 +20,7 @@ const SignUp = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={"red"} />
+      <StatusBar barStyle="light-content" backgroundColor={statusBg} />
       <View style={styles.formContainer}>
         <Text style={styles.title}>SignUp</Text>
         <View style={styles.form}>
@@ -36,14 +36,14 @@ const SignUp = ({ navigation }) => {
             onChangeText={setLastName}
             style={styles.input}
           />
-        
+
           <View style={styles.passwordContainer}>
             <TextInput
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
-              style={ styles.passwordInput}
+              style={styles.passwordInput}
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "80%",
-    backgroundColor: "red",
+    backgroundColor: primary,
     marginHorizontal: "10%",
     marginBottom: 10,
     padding: 15,

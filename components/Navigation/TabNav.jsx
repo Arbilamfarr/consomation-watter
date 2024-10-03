@@ -15,12 +15,13 @@ export default function TabNav() {
 
           switch (route.name) {
             case "Home":
-              iconName = "home"; // Use Ionicons name for the icon
+              iconName = "home";
               break;
-            // Add cases for other screens and their corresponding icons
+            case "Person":
+              iconName = "person";
+              break;
           }
 
-          // Return the icon component
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
@@ -30,7 +31,11 @@ export default function TabNav() {
         component={Home}
         options={{ headerShown: false }}
       />
-      {/* Add other Tab.Screen components here */}
+      <Tab.Screen
+        name="person"
+        component={Home}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 }

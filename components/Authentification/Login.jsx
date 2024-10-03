@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { bgcolor, iconcolor } from "../../utils/Variable/Color";
+import { bgcolor, iconcolor, primary, statusBg } from "../../utils/Variable/Color";
 
 const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +24,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={"red"} />
+      <StatusBar barStyle="light-content" backgroundColor={statusBg} />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>Login</Text>
         <View>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   button: {
-    backgroundColor: "red",
+    backgroundColor: primary,
     padding: 15,
     borderRadius: 5,
     alignItems: "center",

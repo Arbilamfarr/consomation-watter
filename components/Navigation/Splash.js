@@ -24,7 +24,10 @@ const Splash = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar barStyle="white" backgroundColor={"red"} />
 
-      <Text>hello world </Text>
+      <Image
+      source={require("../../assets/images/splash/eau.jpg")}
+      style={styles.logo}
+      />
     </View>
   );
 };

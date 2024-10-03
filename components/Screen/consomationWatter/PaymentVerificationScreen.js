@@ -8,10 +8,11 @@ import {
   ActivityIndicator,
   Modal,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 
 const PaymentVerificationScreen = () => {
-  const [isPaid, setIsPaid] = useState(false); // Simulate payment status
+  const [isPaid, setIsPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [password, setPassword] = useState("");
@@ -19,8 +20,7 @@ const PaymentVerificationScreen = () => {
   const handleVerifyPayment = async () => {
     setLoading(true);
     try {
-      // Simulate a network request to verify payment status
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulating network delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsPaid((prevStatus) => !prevStatus);
       Alert.alert(
         "Payment Status",
@@ -33,7 +33,7 @@ const PaymentVerificationScreen = () => {
     }
   };
 
-  const handleMarkAsPaid = async () => {
+  const handleMarkAsPaid = () => {
     setModalVisible(true);
   };
 
@@ -64,18 +64,20 @@ const PaymentVerificationScreen = () => {
         <ActivityIndicator size="large" color="#007BFF" />
       ) : (
         <>
-          {!isPaid && (
-            <Button
-              title="Mark as Paid"
-              onPress={handleMarkAsPaid}
-              color="#007BFF"
-            />
-          )}
-          <Button
-            title="Verify Payment"
+          <TouchableOpacity
+            style={[styles.button, styles.verifyButton]}
             onPress={handleVerifyPayment}
-            color="#007BFF"
-          />
+          >
+            <Text style={styles.buttonText}>Verify Payment</Text>
+          </TouchableOpacity>
+          {!isPaid && (
+            <TouchableOpacity
+              style={[styles.button, styles.markAsPaidButton]}
+              onPress={handleMarkAsPaid}
+            >
+              <Text style={styles.buttonText}>Mark as Paid</Text>
+            </TouchableOpacity>
+          )}
         </>
       )}
 
@@ -99,11 +101,12 @@ const PaymentVerificationScreen = () => {
               value={password}
               onChangeText={(text) => setPassword(text)}
             />
-            <Button
-              title="Submit"
+            <TouchableOpacity
+              style={[styles.button, styles.submitButton]}
               onPress={handlePasswordSubmit}
-              color="#007BFF"
-            />
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -138,6 +141,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     backgroundColor: "white",
+    borderRadius: 8,
+  },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  verifyButton: {
+    backgroundColor: "#007BFF",
+  },
+  markAsPaidButton: {
+    backgroundColor: "#28a745",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   modalContainer: {
     flex: 1,
@@ -160,6 +182,11 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  submitButton: {
+    backgroundColor: "#007BFF",
   },
 });
 
