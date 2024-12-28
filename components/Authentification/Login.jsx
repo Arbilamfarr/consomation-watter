@@ -9,18 +9,44 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-
-import { bgcolor, iconcolor, primary, statusBg } from "../../utils/Variable/Color";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auth, signInWithEmailAndPassword } from "../../firebase"; // Importer le module Firebase Auth
+import {
+  bgcolor,
+  iconcolor,
+  primary,
+  statusBg,
+} from "../../utils/Variable/Color";
 
 const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Optional: Add a login function
-  const handleLogin = () => {
+  // Fonction de connexion
+const handleLogin = async () => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    // Signed in
+    const user = userCredential.user;
+
+    // Récupérez le token d'authentification
+    const token = await user.getIdToken();
+
+    // Stockez le token dans AsyncStorage
+    await AsyncStorage.setItem("userToken", token);
+
+    console.log(user,token);
     navigation.navigate("TabNav");
-  };
+  } catch (error) {
+    console.error(error);
+    Alert.alert("Erreur", "Échec de la connexion. Vérifiez vos identifiants."); // Alerte en cas d'erreur
+  }
+};
 
   return (
     <View style={styles.container}>
@@ -41,7 +67,7 @@ const Login = ({ navigation }) => {
               secureTextEntry={!showPassword}
               value={password}
               onChangeText={setPassword}
-              style={ styles.passwordInput}
+              style={styles.passwordInput}
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}

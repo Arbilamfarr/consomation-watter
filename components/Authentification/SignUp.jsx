@@ -1,3 +1,4 @@
+// SignUp.js
 import React, { useState } from "react";
 import {
   View,
@@ -7,8 +8,19 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { bgcolor, iconcolor, primary, statusBg } from "../../utils/Variable/Color";
-
+import {
+  auth,
+  firestore,
+  createUserWithEmailAndPassword,
+  setDoc,
+  doc,
+} from "../../firebase"; // Assurez-vous d'ajuster le chemin d'importation selon votre structure de projet
+import {
+  bgcolor,
+  iconcolor,
+  primary,
+  statusBg,
+} from "../../utils/Variable/Color";
 
 const SignUp = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +29,30 @@ const SignUp = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+
+  const handleSignUp = async () => {
+    try {
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      // Save additional user info in Firestore
+      await setDoc(doc(firestore, "users", user.uid), {
+        firstName,
+        lastName,
+        phone,
+        email,
+      });
+
+      console.log("User registered and additional info saved");
+    } catch (error) {
+      console.error("Error signing up: ", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -36,7 +72,12 @@ const SignUp = ({ navigation }) => {
             onChangeText={setLastName}
             style={styles.input}
           />
-
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
           <View style={styles.passwordContainer}>
             <TextInput
               placeholder="Password"
@@ -62,11 +103,11 @@ const SignUp = ({ navigation }) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
         <Text style={styles.link}>
-          I have account?{" "}
+          I have an account?{" "}
           <Text
             onPress={() => navigation.navigate("Login")}
             style={{ color: "black", fontWeight: "500" }}
